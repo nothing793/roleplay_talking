@@ -4,7 +4,43 @@
 
 叫它“AI 伴侣计划”也可以，不过这个项目想解决的不只是聊天：它要把人物设定、模型接入、上下文管理和角色修正串成一条能跑通的流程。
 
-> 当前仓库仍在起步阶段，只有项目说明，没有可运行代码、依赖清单或配置示例。下面写的是项目目标和计划范围，不代表这些功能已经实现。
+> 根目录的 `roleplay_talking` 仍在起步阶段，只有项目说明，没有自己的可运行代码、依赖清单或配置示例。下面写的是根目录项目的目标和计划范围；`opentalking/` 子目录中的实现另见下方模块索引。
+
+## OpenTalking 模块索引
+
+`opentalking/` 子目录包含已落地的 OpenTalking 实现、API 和中文文档。下面按能力整理入口，具体字段与校验规则以运行后的 OpenAPI（`/openapi.json`）为准。
+
+| 模块 | 作用与主要接口 | 文档/代码入口 |
+| --- | --- | --- |
+| 数据导入与资产库 | 导入人物包、知识库文档、记忆/微信聊天、数字人形象、复刻音色和场景背景 | [Persona Package](opentalking/docs/zh/usage/persona-package.md) · [微信聊天导入](opentalking/docs/zh/examples/Wechat_import.md) · [知识库改造说明](opentalking/docs/zh/developer-guide/agent-knowledge-lightrag.md) · [Avatar API](opentalking/docs/zh/docs/api/avatars.md) · [音色与 TTS](opentalking/docs/zh/docs/api/tts-and-voices.md) |
+| 文本生成（LLM） | `POST /sessions/{id}/speak` 把文本送入会话链路；Worker 侧通过 `create_chat_task` 调用 OpenAI-compatible LLM 生成回复，当前没有独立的 `/sessions/{id}/chat` REST 路由 | [LLM 与 STT](opentalking/docs/zh/speech_models/llm-stt.md) · [LLM adapter](opentalking/opentalking/providers/llm/openai_compatible/adapter.py) · [session runner](opentalking/opentalking/pipeline/session/runner.py) |
+| 语音生成（TTS） | `POST /tts/preview` 独立试听；`POST /sessions/{id}/speak` 的回复由 TTS 合成并播报；`POST /voices/clone` 复刻音色 | [TTS 与音色 API](opentalking/docs/zh/docs/api/tts-and-voices.md) · [音色与 TTS 使用](opentalking/docs/zh/usage/webui/voice-and-tts.md) |
+| 语音转文字（STT） | `POST /sessions/{id}/transcribe` 返回识别文本；`POST /sessions/{id}/speak_audio` 在识别后进入会话；WebSocket 支持流式音频输入 | [会话 API](opentalking/docs/zh/docs/api/sessions.md) · [STT 文档](opentalking/docs/zh/speech_models/stt.md) |
+| 视频生成 | `POST /video-creation/jobs` 创建视频任务，支持上传音频、文本合成、复刻音色、参考视频和双人对话等来源；结果可从 `/exports/videos/{id}/download` 下载 | [视频创作](opentalking/docs/zh/usage/webui/video-creation.md) · [视频创作 API/RTMPS](opentalking/docs/zh/docs/api/video-creation-rtmps-execution.md) · [视频克隆](opentalking/docs/zh/usage/webui/video-clone.md) |
+| 实时对话与 WebRTC | `POST /sessions`、`POST /sessions/{id}/webrtc/offer`，以及音频输入 WebSocket；SSE `/sessions/{id}/events` 推送 `transcript`、`llm`、`subtitle.chunk`、`tts`、`frame` 等事件 | [会话 API](opentalking/docs/zh/docs/api/sessions.md) · [事件与流式接口](opentalking/docs/zh/docs/api/events.md) |
+| API 接口总览 | REST、SSE 与 WebSocket；默认 Base URL 为 `http://localhost:8000`，Swagger UI 为 `<base>/docs`，原始规范为 `<base>/openapi.json` | [API 索引](opentalking/docs/zh/docs/api/index.md) · [架构说明](opentalking/docs/zh/docs/architecture.md) · [OpenTalking 中文 README](opentalking/README.zh.md) |
+
+> 你列出的“生成文本”按 LLM 对话回复整理，“生成文字”按语音转文字（STT）整理；如果“生成文字”指的是前端字幕，字幕由 SSE 的 `transcript`、`llm` 和 `subtitle.chunk` 事件输出。OpenTalking 的文本生成在会话运行时内部完成，当前没有单独的 chat REST 端点。
+
+### 导入数据可接受类型
+
+| 导入项 | 接口 | 可接受类型与限制 |
+| --- | --- | --- |
+| 人物包（Persona） | `POST /personas/import` | `.otpersona` 或 `.zip`，不超过 200MB；压缩包根目录需有 `persona.json`，可带 `prompts/`、`knowledge/` 等目录。 |
+| 知识库文档 | `POST /agent/knowledge-bases/{kb_id}/documents`、`POST /agent/knowledge-documents` | `.txt`、`.md`、`.markdown`、`.pdf`、`.pptx`，单文件不超过 20MB。 |
+| 微信聊天记录 | `POST /memory/wechat-import` | WeFlow 导出的 `.json`、`.csv`、`.txt`、`.html`、`.htm`，或包含这些文件的 `.zip`；不接受在线 API URL。 |
+| 记忆条目 | `POST /memory/libraries/{library_id}/import` | JSON 请求体；`turns` 数组中每项包含 `role`（`user` 或 `assistant`）和 `content`。 |
+| 数字人形象 | `POST /avatars/custom` | 图片与视频二选一：接口文档列出的图片类型为 JPEG、PNG、WebP，不超过 10MB；视频为 MP4、WebM、MOV、AVI，不超过 200MB。视频会取首帧作为形象源图。 |
+| 复刻音色 | `POST /voices/clone` | FFmpeg 能解码的音频（如 WAV、MP3、M4A、WebM），大小 256B–12MB；服务端会转为 24kHz 单声道 WAV。 |
+| 视频创作音频 | `POST /video-creation/jobs`（`audio_source=upload`） | WAV、MP3、M4A、WebM 等 FFmpeg 可解码音频，默认不超过 50MB。 |
+| 场景背景 | `POST /scene-assets/backgrounds` | PNG、JPEG、WebP，或 MP4、WebM、MOV；默认不超过 200MB。 |
+
+### API 入口
+
+- 本地 API 文档索引：[opentalking/docs/zh/docs/api/index.md](opentalking/docs/zh/docs/api/index.md)
+- 运行服务后打开 Swagger UI：`http://localhost:8000/docs`
+- OpenAPI 原始规范：`http://localhost:8000/openapi.json`
+- 端点实现目录：[opentalking/apps/api/routes](opentalking/apps/api/routes)
 
 ## 项目目标
 
