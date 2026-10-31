@@ -6,7 +6,7 @@ web_port: 5184
 host: "0.0.0.0"
 backend: "omnirt"
 model: "musetalk"
-avatar_id: "office-woman"
+avatar_id: ""
 technical_route: "portrait animation"
 input_type: "audio+image"
 prompt: "你好，介绍下你自己吧！"

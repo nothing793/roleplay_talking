@@ -6,7 +6,7 @@ WebUI is OpenTalking's interactive workspace for avatar selection, model selecti
 
 Use WebUI to:
 
-- Select built-in or custom avatars.
+- Select a custom avatar.
 - Choose the model for the current session.
 - Select TTS provider and voice.
 - Converse through text or voice.
@@ -75,7 +75,7 @@ WebUI displays connection, session, model, and TTS errors. When something fails,
 
 ### 1. Select Avatar
 
-Select an avatar from the library. For the first run, use a built-in avatar to avoid custom asset issues.
+Select an avatar from the library. For the first run, upload one clear frontal or half-body image.
 
 ### 2. Select Model
 

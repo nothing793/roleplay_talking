@@ -206,7 +206,7 @@ $DIGITAL_HUMAN_HOME/models/
 
 ### 4. Prepare a Custom Avatar
 
-You can start with the built-in QuickTalk example avatar. Later, if you want to upload your own identity, use a clear frontal or half-body image and create a custom avatar in WebUI through “upload from local”.
+Start by uploading your own avatar. Use a clear frontal or half-body image and create a custom avatar in WebUI through “upload from local”.
 
 <div class="ot-figure-placeholder">
   <strong>Screenshot placeholder: upload QuickTalk Avatar</strong>

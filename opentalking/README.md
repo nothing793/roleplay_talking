@@ -1,6 +1,6 @@
 # OpenTalking 运行包
 
-这是从 OpenTalking 源码整理出的可运行压缩包，保留了 WebUI、API、Worker、启动脚本、配置示例、文档和示例数字人资产。Git 元数据、官网宣传页、重复 README 和 GitHub 模板已经移除。
+这是从 OpenTalking 源码整理出的可运行压缩包，保留 WebUI、API、Worker、启动脚本、配置示例和文档。随包示例数字人已经移除，使用前需要通过 WebUI 上传自己的数字人形象。Git 元数据、官网宣传页、重复 README 和 GitHub 模板已经移除。
 
 ## 目录说明
 
@@ -10,7 +10,7 @@
 | `apps/api`、`opentalking` | API、Worker 与运行时代码 |
 | `scripts/start_unified.sh` | 源码模式的统一启动脚本 |
 | `docker-compose.yml` | Docker 全栈编排，默认 Mock 模式 |
-| `examples/avatars` | WebUI 使用的示例数字人资产 |
+| `examples/avatars` | 用户导入的 Avatar bundle 根目录；仓库不再附带示例形象 |
 | `docs` | 项目文档 |
 | `.env.example` | 环境变量模板 |
 
@@ -40,7 +40,7 @@ cp .env.example .env
 bash scripts/start_unified.sh --mock
 ```
 
-默认 WebUI 地址为 `http://127.0.0.1:5173`。停止服务：
+默认 WebUI 地址为 `http://127.0.0.1:5173`。第一次打开后，先在“形象库”上传图片或视频，再开始会话。停止服务：
 
 ```bash
 bash scripts/quickstart/stop_all.sh

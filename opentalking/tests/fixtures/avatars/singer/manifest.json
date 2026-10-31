@@ -1,0 +1,26 @@
+{
+  "id": "singer",
+  "name": "测试 Wav2Lip 帧形象",
+  "model_type": "wav2lip",
+  "fps": 30,
+  "sample_rate": 16000,
+  "width": 830,
+  "height": 1108,
+  "version": "1.0",
+  "metadata": {
+    "idle_mode": "loop",
+    "reference_mode": "frames",
+    "frame_dir": "frames",
+    "frame_metadata": "frames/mouth_metadata.json",
+    "preprocessed": true,
+    "person_mode": "single",
+    "animation": {
+      "mouth_center": [
+        0.5,
+        0.5
+      ],
+      "mouth_rx": 0.04,
+      "mouth_ry": 0.015
+    }
+  }
+}

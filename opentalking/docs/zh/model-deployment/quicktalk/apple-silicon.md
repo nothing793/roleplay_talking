@@ -135,7 +135,7 @@ bash scripts/start_unified.sh \
   --web-port 5280
 ```
 
-打开 `http://127.0.0.1:5280`，选择正脸清晰的 avatar，例如内置 `singer`，模型选择 `quicktalk`。首次运行会构建 avatar cache，后续可复用。
+打开 `http://127.0.0.1:5280`，上传或选择一个正脸清晰的 avatar，模型选择 `quicktalk`。首次运行会构建 avatar cache，后续可复用。
 
 ## 6. 验证实时数字人链路
 
@@ -151,7 +151,7 @@ QuickTalk 模型应返回 `connected: true`，原因是 `local_runtime`。
 ```bash title="终端"
 curl -s -X POST http://127.0.0.1:8210/sessions \
   -H 'Content-Type: application/json' \
-  -d '{"avatar_id":"singer","model":"quicktalk","tts_provider":"edge"}' \
+  -d '{"avatar_id":"<avatar_id>","model":"quicktalk","tts_provider":"edge"}' \
   | tee /tmp/opentalking-session.json | python -m json.tool
 
 sid=$(python - <<'PY'

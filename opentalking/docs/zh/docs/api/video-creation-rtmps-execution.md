@@ -643,7 +643,7 @@ ss -ltnup | rg ':(8210|5280|1936|8554|8888|8889)\\b'
 
 ### 7.2 创建异步视频任务
 
-下面以 `mock` 轻量模式和 TTS 文本为例。推荐使用 `dogo-light2d` 数字人，生成速度和依赖最适合本地链路验收。`execution_mode=async` 已经支持。
+下面以 `mock` 轻量模式和 TTS 文本为例。先上传一个数字人，再用它的 `avatar_id` 做本地链路验收。`execution_mode=async` 已经支持。
 
 ```bash
 BASE=http://127.0.0.1:8210
@@ -651,7 +651,7 @@ BASE=http://127.0.0.1:8210
 curl --fail-with-body -sS -X POST "$BASE/video-creation/jobs" \
   -F 'execution_mode=async' \
   -F 'model=mock' \
-  -F 'avatar_id=dogo-light2d' \
+  -F 'avatar_id=<avatar_id>' \
   -F 'audio_source=tts_text' \
   -F 'text=这是视频生成过程中分片发布 RTMPS 的验收片段。' \
   -F 'tts_provider=mock' \
@@ -779,7 +779,7 @@ PY
 
 1. 打开 WebUI：本机用 `http://127.0.0.1:5280`，远程用 `http://<服务器公网IP>:5280`。不要访问 `5180`。
 2. 点击左侧“视频创作”，进入“离线数字人口播”；不要先进入“实时对话”，也不要用“流媒体”页里的 `Studio RTMPS` 作为本项验收对象。
-3. 选择数字人。纯本地无 GPU 验收可选 `dogo-light2d`，模型会显示为“轻量模式”（后端值为 `mock`）。音频源选择“口播合成”，TTS provider 选择 `mock`（若页面已固定为 mock 也可以保持默认）。文本建议使用能生成约 10 秒以上视频的内容。
+3. 选择已上传的数字人。纯本地无 GPU 验收可选择任意形象并选中“轻量模式”（后端值为 `mock`）。音频源选择“口播合成”，TTS provider 选择 `mock`（若页面已固定为 mock 也可以保持默认）。文本建议使用能生成约 10 秒以上视频的内容。
 4. 勾选“边生成边发布 RTMPS”。填写以下字段：
 
    | 前端字段 | 应填写的值 |

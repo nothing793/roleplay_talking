@@ -19,7 +19,7 @@ source .venv/bin/activate
 bash scripts/quickstart/start_mock.sh
 ```
 
-打开 <http://localhost:5173>，选择内置 avatar 与 `mock` 模型，点击麦克风开始对话。
+打开 <http://localhost:5173>，上传一个 avatar，选择 `mock` 模型，点击麦克风开始对话。
 
 ## 验证
 

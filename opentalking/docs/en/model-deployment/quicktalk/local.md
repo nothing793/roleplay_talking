@@ -38,7 +38,7 @@ cd "$OPENTALKING_HOME"
 bash scripts/start_unified.sh --backend local --model quicktalk --api-port 8000 --web-port 5173
 ```
 
-Open `http://localhost:5173`, choose a clear front-facing avatar such as the built-in `singer`, and select the `quicktalk` model. The first run prewarms the avatar cache before the session starts.
+Open `http://localhost:5173`, upload or choose a clear front-facing avatar, and select the `quicktalk` model. The first run prewarms the avatar cache before the session starts.
 
 ## Frontend Startup
 

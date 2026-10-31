@@ -1,10 +1,5 @@
 import { useState } from "react";
 
-const avatarPreviewUrl = new URL(
-  "../../../../examples/avatars/anchor/preview.png",
-  import.meta.url,
-).href;
-
 type RightTab = "chat" | "events" | "exports" | "metrics";
 
 const rightTabs: { id: RightTab; label: string }[] = [
@@ -211,7 +206,13 @@ function Stage() {
 
           <div className="relative z-[1] flex h-full min-h-[360px] items-center justify-center px-4 pt-16 pb-24 lg:min-h-[420px] lg:px-8">
             <div className="relative flex aspect-[9/16] h-[min(62vh,620px)] max-h-full min-h-[260px] items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl shadow-slate-200/80 lg:min-h-[330px]">
-              <img src={avatarPreviewUrl} alt="数字人舞台预览" className="h-full w-full object-cover" />
+              <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-gradient-to-b from-cyan-50 via-white to-slate-100 px-6 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-cyan-200 bg-white text-cyan-600 shadow-sm">
+                  <Icon name="spark" />
+                </div>
+                <p className="text-sm font-medium text-slate-800">数字人舞台</p>
+                <p className="max-w-[16rem] text-xs leading-relaxed text-slate-500">上传或选择形象后，在此预览实时画面。</p>
+              </div>
               <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white/90 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-slate-200 bg-white/95 px-4 py-3 text-center text-sm leading-relaxed text-slate-900 shadow-lg shadow-slate-300/50 backdrop-blur">
                 欢迎来到 OpenTalking Studio，我可以实时回答问题，也可以生成适合直播和短视频的数字人内容。

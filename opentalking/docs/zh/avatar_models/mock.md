@@ -19,7 +19,7 @@ CPU 即可，不需要 GPU、NPU、模型权重或外部模型服务。
 
 ## 目录结构
 
-只需要 OpenTalking checkout 和内置示例 avatar：
+只需要 OpenTalking checkout，并在 WebUI 上传一个自备 avatar：
 
 ```text
 opentalking/

@@ -77,4 +77,4 @@ local Wav2Lip 默认使用 `easy_improved` 后处理。前端提供 `auto`、`ba
 | `OPENTALKING_WAV2LIP_BATCH_SIZE` | `16` | 与 OmniRT CUDA quickstart 默认值一致；显存紧张时再调低 |
 | `OPENTALKING_WAV2LIP_MAX_LONG_EDGE` | `832` | 与 OmniRT CUDA quickstart 默认值一致，让渲染延迟更接近实时；只有优先保留原始分辨率时才设 `0` |
 | `OPENTALKING_WAV2LIP_JPEG_QUALITY` | `85` | 输出帧 JPEG 质量，越高画面越好但带宽更大 |
-| `OPENTALKING_PREWARM_AVATARS` | `singer` | 服务启动时提前预热常用形象 |
+| `OPENTALKING_PREWARM_AVATARS` | 空 | 服务启动时提前预热指定形象 ID，多个 ID 用逗号分隔 |

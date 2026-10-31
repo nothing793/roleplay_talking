@@ -53,7 +53,7 @@ cd "$OPENTALKING_HOME"
 bash scripts/start_unified.sh --backend local --model wav2lip --api-port 8000 --web-port 5173
 ```
 
-打开 `http://localhost:5173`，选择内置 Wav2Lip 形象和 `wav2lip` 模型。首次加载会初始化 checkpoint、S3FD 人脸检测器和形象缓存，可能需要几十秒。
+打开 `http://localhost:5173`，上传或选择一个带 `reference.png` 的形象，再选择 `wav2lip` 模型。首次加载会初始化 checkpoint、S3FD 人脸检测器和形象缓存，可能需要几十秒。
 
 local Wav2Lip 默认使用 `easy_improved` 后处理。前端提供 `auto`、`basic`、`opentalking_improved`、`easy_improved` 四个普通选项；后端仍接受 `easy_enhanced` 用于 API/env 测试，但该模式需要安装 GFPGAN 并通过 `OPENTALKING_WAV2LIP_GFPGAN_CHECKPOINT` 指向 checkpoint。
 
@@ -76,7 +76,7 @@ bash scripts/quickstart/start_frontend.sh --api-port 8000 --web-port 5173 --host
 | `OPENTALKING_WAV2LIP_BATCH_SIZE` | `16` | 显存紧张时调低。 |
 | `OPENTALKING_WAV2LIP_MAX_LONG_EDGE` | `832` | 控制输入帧长边，降低延迟。 |
 | `OPENTALKING_WAV2LIP_JPEG_QUALITY` | `85` | 输出帧 JPEG 质量。 |
-| `OPENTALKING_PREWARM_AVATARS` | `singer` | 服务启动时提前预热形象。 |
+| `OPENTALKING_PREWARM_AVATARS` | 空 | 服务启动时提前预热指定形象 ID，多个 ID 用逗号分隔。 |
 
 ## 6. 验证
 

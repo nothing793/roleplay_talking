@@ -65,7 +65,7 @@ source .venv/bin/activate
 bash scripts/quickstart/start_mock.sh
 ```
 
-打开 <http://localhost:5173>，选择内置 avatar 与 `mock` 模型，开始语音对话。此时画面是占位数字人，
+打开 <http://localhost:5173>，上传一个 avatar，选择 `mock` 模型，开始语音对话。此时画面是占位数字人，
 但 STT、LLM、TTS、字幕事件和 WebRTC 链路都已真实运行。
 
 ## 3. 用 API 嵌入业务系统

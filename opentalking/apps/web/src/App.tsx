@@ -730,16 +730,7 @@ function pickInitialAvatar(
     return storedAvatar;
   }
   if (customAvatar) return customAvatar;
-  return (
-    avatars.find((a) => a.id === "anime-handsome-guy" && available.has("fasterliveportrait")) ??
-    avatars.find((a) => a.id === "quicktalk-daytime" && available.has("quicktalk")) ??
-    avatars.find((a) => a.model_type === "quicktalk" && available.has("quicktalk")) ??
-    avatars.find((a) => a.model_type === "flashhead" && available.has("flashhead")) ??
-    avatars.find((a) => a.model_type === "flashtalk" && available.has("flashtalk")) ??
-    avatars.find((a) => a.model_type === "musetalk" && available.has("musetalk")) ??
-    avatars.find((a) => available.has(a.model_type)) ??
-    avatars[0]
-  );
+  return avatars.find((a) => available.has(a.model_type)) ?? avatars[0];
 }
 
 function pickInitialCustomAvatar(
@@ -901,7 +892,7 @@ export default function App() {
   const [avatars, setAvatars] = useState<AvatarSummary[]>([]);
   const [models, setModels] = useState<string[]>([]);
   const [modelStatuses, setModelStatuses] = useState<ModelStatus[]>([]);
-  const [avatarId, setAvatarId] = useState(() => readStoredAvatarId() ?? "singer");
+  const [avatarId, setAvatarId] = useState(() => readStoredAvatarId() ?? "");
   const [model, setModel] = useState("flashtalk");
   const [selectedPersonaId, setSelectedPersonaId] = useState<string>(() => {
     try {

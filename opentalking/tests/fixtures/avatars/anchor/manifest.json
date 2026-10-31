@@ -1,0 +1,15 @@
+{
+  "id": "anchor",
+  "name": "测试形象 anchor",
+  "model_type": "flashhead",
+  "fps": 30,
+  "sample_rate": 16000,
+  "width": 512,
+  "height": 512,
+  "version": "1.0",
+  "metadata": {
+    "idle_mode": "static",
+    "reference_mode": "image",
+    "person_mode": "single"
+  }
+}

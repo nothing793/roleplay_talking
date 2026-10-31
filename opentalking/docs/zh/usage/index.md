@@ -42,7 +42,7 @@ Mock 模式不依赖模型权重，适合确认前后端流程、页面交互和
 
 ### 我想自定义 Avatar
 
-1. 先用内置 Avatar 跑通一次会话。
+1. 先上传一个 Avatar，跑通一次会话。
 2. 阅读[自定义 Avatar](./webui/custom-avatar.md)，确认图片、视频素材和模型兼容性。
 3. 在 WebUI 上传图片，或使用脚本生成 Wav2Lip 资产。
 4. 回到 WebUI 选择新 Avatar 进行验证。

@@ -183,7 +183,7 @@ $OPENTALKING_HOME/outputs/streaming/credentials.env
 
 2. 选择「离线数字人口播」。
 
-3. 在数字人列表中选择需要的形象，例如「博士小狗」（`dogo-light2d`）。
+3. 在数字人列表中选择已上传的形象。
 
 4. 选择生成模型，并填写标题。
 

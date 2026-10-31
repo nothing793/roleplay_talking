@@ -33,7 +33,7 @@ def test_light2d_frontend_modules_and_app_wiring_exist() -> None:
 
 
 def test_light2d_asset_contract_is_complete() -> None:
-    avatar_dir = ROOT / "examples/avatars/dogo-light2d"
+    avatar_dir = ROOT / "tests/fixtures/avatars/dogo-light2d"
     manifest = json.loads((avatar_dir / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["id"] == "dogo-light2d"
     assert manifest["model_type"] == "mock"

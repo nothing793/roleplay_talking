@@ -1,0 +1,15 @@
+{
+  "id": "office-woman",
+  "name": "测试形象 office-woman",
+  "model_type": "wav2lip",
+  "fps": 30,
+  "sample_rate": 16000,
+  "width": 64,
+  "height": 64,
+  "version": "1.0",
+  "metadata": {
+    "idle_mode": "static",
+    "reference_mode": "image",
+    "person_mode": "single"
+  }
+}

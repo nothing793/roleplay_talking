@@ -340,15 +340,15 @@ def test_frontend_preserves_custom_avatar_selection_across_model_changes():
     assert 'setAvatarId(preferred.id)' not in app
 
 
-def test_frontend_prefers_existing_custom_avatar_before_builtin_default():
+def test_frontend_prefers_existing_custom_avatar_before_model_fallback():
     app = (WEB / "App.tsx").read_text(encoding="utf-8")
 
     assert "pickInitialCustomAvatar" in app
     assert "avatar.is_custom" in app
     assert "const customAvatar = pickInitialCustomAvatar(avatars, available)" in app
     custom_idx = app.index("const customAvatar = pickInitialCustomAvatar")
-    builtin_idx = app.index('avatars.find((a) => a.id === "anime-handsome-guy"')
-    assert custom_idx < builtin_idx
+    model_match_idx = app.index("avatars.find((a) => available.has(a.model_type))")
+    assert custom_idx < model_match_idx
 
 
 

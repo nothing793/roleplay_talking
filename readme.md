@@ -98,7 +98,7 @@ OpenTalkingLauncher/
 | 实时对话与 WebRTC | `POST /sessions`、`POST /sessions/{id}/webrtc/offer`，以及音频输入 WebSocket；SSE `/sessions/{id}/events` 推送 `transcript`、`llm`、`subtitle.chunk`、`tts`、`frame` 等事件 | [会话 API](opentalking/docs/zh/docs/api/sessions.md) · [事件与流式接口](opentalking/docs/zh/docs/api/events.md) |
 | API 接口总览 | REST、SSE 与 WebSocket；默认 Base URL 为 `http://localhost:8000`，Swagger UI 为 `<base>/docs`，原始规范为 `<base>/openapi.json` | [API 索引](opentalking/docs/zh/docs/api/index.md) · [架构说明](opentalking/docs/zh/docs/architecture.md) · [OpenTalking 中文文档](opentalking/docs/zh/index.md) |
 
-> 你列出的“生成文本”按 LLM 对话回复整理，“生成文字”按语音转文字（STT）整理；如果“生成文字”指的是前端字幕，字幕由 SSE 的 `transcript`、`llm` 和 `subtitle.chunk` 事件输出。OpenTalking 的文本生成在会话运行时内部完成，当前没有单独的 chat REST 端点。
+> 列出的“生成文本”按 LLM 对话回复整理，“生成文字”按语音转文字（STT）整理；如果“生成文字”指的是前端字幕，字幕由 SSE 的 `transcript`、`llm` 和 `subtitle.chunk` 事件输出。OpenTalking 的文本生成在会话运行时内部完成，当前没有单独的 chat REST 端点。
 
 ### 导入数据可接受类型
 

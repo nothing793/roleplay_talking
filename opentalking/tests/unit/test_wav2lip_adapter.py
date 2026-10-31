@@ -13,6 +13,9 @@ from opentalking.media.frame_avatar import FrameAvatarState
 from opentalking.models.wav2lip.adapter import Wav2LipAdapter, Wav2LipPrediction
 
 
+FIXTURE_AVATARS = (Path(__file__).resolve().parents[1] / "fixtures" / "avatars").resolve()
+
+
 def _install_fake_wav2lip_runtime(monkeypatch) -> type:
     runtime_mod = types.ModuleType("opentalking.models.wav2lip.runtime")
     loader_mod = types.ModuleType("opentalking.models.wav2lip.loader")
@@ -187,22 +190,17 @@ def test_wav2lip_adapter_uses_local_runtime_and_preprocessed_metadata(monkeypatc
     models_dir = Path(__file__).resolve().parents[2] / "models" / "wav2lip"
     monkeypatch.setenv("OPENTALKING_WAV2LIP_MODEL_ROOT", str(models_dir))
     monkeypatch.setenv("OPENTALKING_WAV2LIP_MAX_LONG_EDGE", "768")
-    root = Path(__file__).resolve().parents[2]
     adapter = Wav2LipAdapter()
     adapter.load_model("cpu")
-    state = adapter.load_avatar(str(root / "examples" / "avatars" / "singer"))
+    state = adapter.load_avatar(str(FIXTURE_AVATARS / "singer"))
 
     assert not isinstance(state, FrameAvatarState)
     session = fake_runtime.instances[-1].sessions[-1]
     assert session.reference_mode == "frames"
     assert session.preprocessed is True
-    assert Path(session.ref_frame_dir).parts[-4:] == ("examples", "avatars", "singer", "frames")
-    assert Path(session.ref_frame_metadata_path).parts[-5:] == (
-        "examples",
-        "avatars",
-        "singer",
-        "frames",
-        "mouth_metadata.json",
+    assert Path(session.ref_frame_dir) == FIXTURE_AVATARS / "singer" / "frames"
+    assert Path(session.ref_frame_metadata_path) == (
+        FIXTURE_AVATARS / "singer" / "frames" / "mouth_metadata.json"
     )
     assert session.wav2lip_postprocess_mode == "easy_improved"
     assert session.video.width == 574
@@ -234,11 +232,10 @@ def test_wav2lip_adapter_uses_omnirt_resolution_limit_by_default(monkeypatch) ->
     monkeypatch.setenv("OPENTALKING_WAV2LIP_MODEL_ROOT", str(models_dir))
     monkeypatch.delenv("OPENTALKING_WAV2LIP_MAX_LONG_EDGE", raising=False)
     monkeypatch.delenv("OMNIRT_WAV2LIP_MAX_LONG_EDGE", raising=False)
-    root = Path(__file__).resolve().parents[2]
     adapter = Wav2LipAdapter()
     adapter.load_model("cpu")
 
-    adapter.load_avatar(str(root / "examples" / "avatars" / "singer"))
+    adapter.load_avatar(str(FIXTURE_AVATARS / "singer"))
 
     session = fake_runtime.instances[-1].sessions[-1]
     assert session.video.width == 622
@@ -250,12 +247,11 @@ def test_wav2lip_adapter_postprocess_override_wins_over_manifest_and_env(monkeyp
     models_dir = Path(__file__).resolve().parents[2] / "models" / "wav2lip"
     monkeypatch.setenv("OPENTALKING_WAV2LIP_MODEL_ROOT", str(models_dir))
     monkeypatch.setenv("OPENTALKING_WAV2LIP_POSTPROCESS_MODE", "easy_improved")
-    root = Path(__file__).resolve().parents[2]
     adapter = Wav2LipAdapter()
     adapter.set_wav2lip_postprocess_mode("basic")
     adapter.load_model("cpu")
 
-    adapter.load_avatar(str(root / "examples" / "avatars" / "singer"))
+    adapter.load_avatar(str(FIXTURE_AVATARS / "singer"))
 
     session = fake_runtime.instances[-1].sessions[-1]
     assert session.wav2lip_postprocess_mode == "basic"
@@ -265,10 +261,9 @@ def test_wav2lip_adapter_warmup_runs_runtime_forward_and_restores_stream_state(m
     fake_runtime = _install_fake_wav2lip_runtime(monkeypatch)
     models_dir = Path(__file__).resolve().parents[2] / "models" / "wav2lip"
     monkeypatch.setenv("OPENTALKING_WAV2LIP_MODEL_ROOT", str(models_dir))
-    root = Path(__file__).resolve().parents[2]
     adapter = Wav2LipAdapter()
     adapter.load_model("cpu")
-    state = adapter.load_avatar(str(root / "examples" / "avatars" / "anchor"))
+    state = adapter.load_avatar(str(FIXTURE_AVATARS / "anchor"))
     runtime = fake_runtime.instances[-1]
     runtime.rendered.clear()
     state.emitted_frames = 7
@@ -289,10 +284,9 @@ def test_wav2lip_adapter_accepts_reference_only_avatar_with_local_runtime(monkey
     _install_fake_wav2lip_runtime(monkeypatch)
     models_dir = Path(__file__).resolve().parents[2] / "models" / "wav2lip"
     monkeypatch.setenv("OPENTALKING_WAV2LIP_MODEL_ROOT", str(models_dir))
-    root = Path(__file__).resolve().parents[2]
     adapter = Wav2LipAdapter()
     adapter.load_model("cpu")
-    state = adapter.load_avatar(str(root / "examples" / "avatars" / "anchor"))
+    state = adapter.load_avatar(str(FIXTURE_AVATARS / "anchor"))
 
     assert not isinstance(state, FrameAvatarState)
     assert state.session.reference_mode == "image"
@@ -312,9 +306,8 @@ def test_wav2lip_adapter_accepts_reference_only_avatar_with_local_runtime(monkey
 
 def test_wav2lip_adapter_legacy_fallback_is_explicit(monkeypatch) -> None:
     monkeypatch.setenv("OPENTALKING_WAV2LIP_LEGACY_LOCAL_FALLBACK", "1")
-    root = Path(__file__).resolve().parents[2]
     adapter = Wav2LipAdapter()
-    state = adapter.load_avatar(str(root / "examples" / "avatars" / "singer"))
+    state = adapter.load_avatar(str(FIXTURE_AVATARS / "singer"))
 
     assert isinstance(state, FrameAvatarState)
     assert state.frames

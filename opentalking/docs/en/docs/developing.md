@@ -23,7 +23,7 @@ opentalking/
 │   └── web/              # React frontend (TypeScript, Vite)
 ├── configs/              # default.yaml, profiles/*, synthesis/*
 ├── scripts/quickstart/   # Start and stop helpers
-├── examples/avatars/     # Sample avatar bundles
+├── examples/avatars/     # User-imported avatar bundles
 ├── tests/                # pytest suite
 └── docs/                 # Documentation site
 ```

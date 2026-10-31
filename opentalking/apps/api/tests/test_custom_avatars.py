@@ -390,7 +390,7 @@ def test_avatar_summary_groups_renamed_duo_dialog_assets_together(tmp_path: Path
 
 
 def test_builtin_female_host_transparent_avatar_asset_is_ready() -> None:
-    avatar_dir = REPO_ROOT / "examples" / "avatars" / "female-host-transparent"
+    avatar_dir = REPO_ROOT / "tests" / "fixtures" / "avatars" / "female-host-transparent"
     manifest = json.loads((avatar_dir / "manifest.json").read_text(encoding="utf-8"))
     reference = avatar_dir / "reference.png"
     preview = avatar_dir / "preview.png"

@@ -31,7 +31,7 @@ def _client(monkeypatch, tmp_path: Path) -> TestClient:
     monkeypatch.delenv("OMNIRT_ENDPOINT", raising=False)
     monkeypatch.delenv("OPENTALKING_OMNIRT_ENDPOINT", raising=False)
     monkeypatch.chdir(tmp_path)
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "avatars"
     monkeypatch.setenv("OPENTALKING_AVATARS_DIR", str(avatars_dir))
     monkeypatch.setenv("OPENTALKING_FLASHTALK_WS_URL", "ws://127.0.0.1:8765")
     unified_main.get_settings.cache_clear()

@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 class CreateSessionRequest(BaseModel):
     persona_id: str | None = None
-    avatar_id: str | None = Field(default=None, examples=["singer"])
+    avatar_id: str | None = Field(default=None, examples=["my-avatar"])
     model: str | None = Field(default=None, examples=["wav2lip"])
     tts_provider: str | None = None
     stt_provider: str | None = None

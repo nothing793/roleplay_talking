@@ -72,7 +72,7 @@ cd "$OPENTALKING_HOME"
 bash scripts/start_unified.sh --backend local --model quicktalk --api-port 8000 --web-port 5173
 ```
 
-打开 `http://localhost:5173`，选择一个正脸清晰、带 `reference.png` 或 `source_video` 的 Avatar，例如内置 `singer`，再选择 `quicktalk` 模型。首次启动会先预热 Avatar Cache，耗时取决于 GPU 和人脸检测速度。
+打开 `http://localhost:5173`，上传或选择一个正脸清晰、带 `reference.png` 或 `source_video` 的 Avatar，再选择 `quicktalk` 模型。首次启动会先预热 Avatar Cache，耗时取决于 GPU 和人脸检测速度。
 
 ## 5. 启动或重启前端
 

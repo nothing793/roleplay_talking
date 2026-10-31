@@ -80,4 +80,4 @@ If GPU memory is tight or first-frame latency is high, tune these parameters fir
 | `OPENTALKING_WAV2LIP_BATCH_SIZE` | `16` | Matches the OmniRT CUDA quickstart default; lower it if GPU memory is tight. |
 | `OPENTALKING_WAV2LIP_MAX_LONG_EDGE` | `832` | Matches the OmniRT CUDA quickstart default and keeps render latency closer to realtime; set `0` only when prioritizing full source resolution over latency. |
 | `OPENTALKING_WAV2LIP_JPEG_QUALITY` | `85` | Output-frame JPEG quality; higher values improve visuals but increase bandwidth. |
-| `OPENTALKING_PREWARM_AVATARS` | `singer` | Prewarm commonly used avatars when the service starts. |
+| `OPENTALKING_PREWARM_AVATARS` | empty | Prewarm the listed avatar IDs when the service starts. |

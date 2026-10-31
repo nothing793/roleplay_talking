@@ -25,7 +25,7 @@
 | TTS | Local CosyVoice3 0.5B | 本地 CosyVoice service / adapter | 本地音色与复刻路径 | 已内置，已验证 | 使用 `local_cosyvoice`，推荐独立启动服务。 |
 | TTS | CosyVoice service | Provider adapter / 远端服务 | 自建音色服务场景 | 已内置，已文档化 | 某些流程需要 `OPENTALKING_PUBLIC_BASE_URL`。 |
 | TTS | ElevenLabs | Provider adapter | 托管多语言音色 | 已内置，已文档化 | 需要 API key 和 voice id。 |
-| Avatar | 内置示例 avatar | 本地资产包 | 默认首跑路径 | 已内置，已验证 | 可作为通用形象资产被不同模型复用。 |
+| Avatar | 自备或上传 avatar bundle | 本地资产包 | 默认首跑路径 | 需要自备素材 | 可作为通用形象资产被不同模型复用。 |
 | Avatar | 自定义上传形象 | `/avatars/custom` | 快速接入自定义形象 | 已内置，已文档化 | 上传后由模型流程按需生成缓存、模板或预处理产物。 |
 | Avatar | 模型派生产物 | 准备脚本 / 首次会话 | 模型需要额外资产时生成 | 已内置，已文档化 | 不要求 avatar manifest 绑定 QuickTalk、MuseTalk 或 Wav2Lip 专属类型。 |
 

@@ -32,7 +32,7 @@ customer-support-zh.otpersona
   "name": "中文售前客服",
   "description": "面向私有化部署场景的中文产品答疑数字人 Persona。",
   "locale": "zh-CN",
-  "avatar": {"id": "singer", "model": "mock"},
+  "avatar": {"id": "<avatar_id>", "model": "mock"},
   "voice": {"provider": "edge", "voice_id": "zh-CN-XiaoxiaoNeural"},
   "agent": {
     "system_prompt": "prompts/system.md",

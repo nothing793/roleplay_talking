@@ -210,7 +210,7 @@ $DIGITAL_HUMAN_HOME/models/
 
 ### 4. 准备自定义 Avatar
 
-可以先使用项目内置的 QuickTalk 示例 Avatar。后续如果要上传自己的形象，建议使用清晰正脸或半身图，
+先在 WebUI 上传自己的形象。建议使用清晰正脸或半身图，
 并在 WebUI 中通过“从本地上传新形象”创建自定义 Avatar。
 
 <div class="ot-figure-placeholder">

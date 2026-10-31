@@ -928,7 +928,9 @@ async def run_once(args: argparse.Namespace) -> None:
         service_ready_proc_vram = retry_gpu_process_mem_gb(pids, gpu_index=gpu_index)
 
 
-        base_avatar_id = str(args.avatar_id or cfg.get("avatar_id", "office-woman"))
+        base_avatar_id = str(args.avatar_id or cfg.get("avatar_id") or "")
+        if not base_avatar_id:
+            raise RuntimeError("--avatar-id or avatar_id in the benchmark config is required")
         avatar_id, benchmark_avatar_dir = prepare_benchmark_avatar(repo, base_avatar_id, model=model, timestamp=timestamp)
         try:
             upload_reference(api_base_url, avatar_id, ref_src)

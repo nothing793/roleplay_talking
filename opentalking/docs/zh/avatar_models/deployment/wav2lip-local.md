@@ -60,7 +60,7 @@ curl -s http://127.0.0.1:8210/models | jq '.statuses[] | select(.id=="wav2lip")'
 |------|------|
 | checkpoint 找不到 | 检查 `OPENTALKING_WAV2LIP_MODEL_ROOT` 和两个 `.pth` 文件。 |
 | 显存不足 | 降低 `OPENTALKING_WAV2LIP_BATCH_SIZE` 或 `OPENTALKING_WAV2LIP_MAX_LONG_EDGE`。 |
-| 首帧慢 | 设置 `OPENTALKING_PREWARM_AVATARS=singer` 预热常用 avatar。 |
+| 首帧慢 | 设置 `OPENTALKING_PREWARM_AVATARS=<avatar_id>` 预热常用 avatar。 |
 | 画质增强报错 | `easy_enhanced` 需要 GFPGAN，并配置 `OPENTALKING_WAV2LIP_GFPGAN_CHECKPOINT`。 |
 
 ## 关闭服务

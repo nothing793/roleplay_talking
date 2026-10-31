@@ -65,7 +65,7 @@ source .venv/bin/activate
 bash scripts/quickstart/start_mock.sh
 ```
 
-Open <http://localhost:5173>, select the built-in avatar and the `mock` model, then start
+Open <http://localhost:5173>, upload an avatar, select the `mock` model, then start
 speaking. The image is a placeholder, but STT, LLM, TTS, captions, and WebRTC are real.
 
 ## 3. Embed Through the API

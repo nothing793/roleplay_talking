@@ -19,7 +19,7 @@ source .venv/bin/activate
 bash scripts/quickstart/start_mock.sh
 ```
 
-Open <http://localhost:5173>, choose a built-in avatar and the `mock` model, then use the
+Open <http://localhost:5173>, upload an avatar, choose the `mock` model, then use the
 microphone button to start a session.
 
 ## Verification

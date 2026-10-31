@@ -135,7 +135,7 @@ bash scripts/start_unified.sh \
   --web-port 5280
 ```
 
-Open `http://127.0.0.1:5280`, choose a front-facing avatar such as the built-in `singer`, and select `quicktalk`. The first run builds the avatar cache; later runs reuse it.
+Open `http://127.0.0.1:5280`, upload or choose a front-facing avatar, and select `quicktalk`. The first run builds the avatar cache; later runs reuse it.
 
 ## 6. Verify the Realtime Digital Human Path
 
@@ -151,7 +151,7 @@ Create a session and send a short sentence:
 ```bash title="Terminal"
 curl -s -X POST http://127.0.0.1:8210/sessions \
   -H 'Content-Type: application/json' \
-  -d '{"avatar_id":"singer","model":"quicktalk","tts_provider":"edge"}' \
+  -d '{"avatar_id":"<avatar_id>","model":"quicktalk","tts_provider":"edge"}' \
   | tee /tmp/opentalking-session.json | python -m json.tool
 
 sid=$(python - <<'PY'

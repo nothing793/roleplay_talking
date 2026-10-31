@@ -1,0 +1,20 @@
+{
+  "id": "dogo-light2d",
+  "name": "测试 Light2D 形象",
+  "model_type": "mock",
+  "fps": 25,
+  "sample_rate": 16000,
+  "width": 561,
+  "height": 1024,
+  "version": "1.0",
+  "metadata": {
+    "matting_status": "opaque",
+    "client_renderer": {
+      "type": "light2d",
+      "config": "light2d/avatar.json",
+      "recommended_for": [
+        "mock"
+      ]
+    }
+  }
+}

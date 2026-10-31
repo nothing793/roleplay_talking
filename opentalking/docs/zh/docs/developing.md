@@ -22,7 +22,7 @@ opentalking/
 │   └── web/              # React 前端（TypeScript、Vite）
 ├── configs/              # default.yaml、profiles/*、synthesis/*
 ├── scripts/quickstart/   # 启停辅助脚本
-├── examples/avatars/     # 示例 Avatar bundle
+├── examples/avatars/     # 用户导入的 Avatar bundle
 ├── tests/                # pytest 套件
 └── docs/                 # 文档站
 ```

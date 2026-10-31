@@ -17,12 +17,17 @@ import apps.api.routes.sessions as sessions_routes
 from apps.api.schemas.session import CreateSessionRequest
 import apps.unified.main as unified_main
 import opentalking.runtime.task_consumer as task_consumer
+
+
 from opentalking.providers.rtc.aiortc import adapter as aiortc_adapter
 from opentalking.core.in_memory_redis import InMemoryRedis
 from opentalking.core.model_config import clear_model_config_cache
 from opentalking.core.redis_keys import FLASHTALK_QUEUE_STATUS
 from opentalking.core.session_store import session_key, set_session_state
 from opentalking.pipeline.recording.recording import append_flashtalk_frames
+
+
+FIXTURE_AVATARS = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "avatars"
 
 
 def test_normalize_voice_for_speak_accepts_elevenlabs_voice_id() -> None:
@@ -271,6 +276,14 @@ def _wait_until(predicate, timeout: float = 2.0) -> None:
 
 
 @pytest.fixture
+def fixture_avatars(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENTALKING_AVATARS_DIR", str(FIXTURE_AVATARS))
+    unified_main.get_settings.cache_clear()
+    yield
+    unified_main.get_settings.cache_clear()
+
+
+@pytest.fixture
 def unified_client(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> TestClient:
     created_runners: dict[str, FakeRunner] = {}
 
@@ -285,7 +298,7 @@ def unified_client(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> TestClien
     monkeypatch.delenv("OPENTALKING_CONFIG_FILE", raising=False)
     monkeypatch.delenv("CONFIG_FILE", raising=False)
     monkeypatch.chdir(tmp_path)
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = FIXTURE_AVATARS
     monkeypatch.setenv("OPENTALKING_AVATARS_DIR", str(avatars_dir))
     monkeypatch.setenv("OPENTALKING_FLASHTALK_WS_URL", "ws://127.0.0.1:8765")
     monkeypatch.setenv("OPENTALKING_STT_DEFAULT_PROVIDER", "sensevoice")
@@ -333,7 +346,7 @@ def test_create_session_avatar_model_decoupled_within_supported(
         )
 
 
-def test_create_session_rejects_unconnected_model() -> None:
+def test_create_session_rejects_unconnected_model(fixture_avatars: None) -> None:
     """Picking a model not connected on this deployment yields 400 with a clear hint."""
     with TestClient(unified_main.create_app()) as client:
         for unsupported in ("musetalk",):
@@ -350,6 +363,7 @@ def test_create_session_rejects_unconnected_model() -> None:
 def test_create_session_accepts_local_wav2lip_adapter(
     tmp_path,
     monkeypatch: pytest.MonkeyPatch,
+    fixture_avatars: None,
 ) -> None:
     config_file = tmp_path / "opentalking.yaml"
     config_file.write_text(
@@ -482,7 +496,7 @@ def test_create_session_passes_agent_config_to_service_for_audio_renderer_models
         fake_connected_model_ids,
     )
 
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = FIXTURE_AVATARS
     app = FastAPI()
     app.state.redis = InMemoryRedis()
     app.state.settings = SimpleNamespace(
@@ -542,7 +556,7 @@ def test_create_session_passes_multiple_knowledge_bases_to_service(
     monkeypatch.setattr(sessions_routes.session_service, "create_session", fake_create_session)
     monkeypatch.setattr(task_consumer, "slot_is_occupied", lambda: False)
 
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = FIXTURE_AVATARS
     app = FastAPI()
     app.state.redis = InMemoryRedis()
     app.state.settings = SimpleNamespace(
@@ -795,7 +809,7 @@ def test_create_session_expands_persona_defaults(
         fake_connected_model_ids,
     )
 
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = FIXTURE_AVATARS
     app = FastAPI()
     app.state.redis = InMemoryRedis()
     app.state.settings = SimpleNamespace(
@@ -880,7 +894,7 @@ def test_create_session_keeps_persona_prompt_above_explicit_llm_prompt(
         fake_connected_model_ids,
     )
 
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = FIXTURE_AVATARS
     app = FastAPI()
     app.state.redis = InMemoryRedis()
     app.state.settings = SimpleNamespace(
@@ -947,7 +961,7 @@ def test_create_session_passes_indextts_voice_and_model_to_service(
         fake_connected_model_ids,
     )
 
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = FIXTURE_AVATARS
     app = FastAPI()
     app.state.redis = InMemoryRedis()
     app.state.settings = SimpleNamespace(
@@ -1455,7 +1469,7 @@ def test_create_session_loads_persona_md_prompt(
         fake_connected_model_ids,
     )
 
-    avatars_dir = Path(__file__).resolve().parents[3] / "examples" / "avatars"
+    avatars_dir = FIXTURE_AVATARS
     app = FastAPI()
     app.state.redis = InMemoryRedis()
     app.state.settings = SimpleNamespace(

@@ -6,7 +6,7 @@ Local mode uses OpenTalking's built-in Wav2Lip adapter. It is the lightest path 
 
 - First move from `mock` to a real talking-head model.
 - Run inference inside the OpenTalking process without deploying OmniRT.
-- Use built-in or custom shared avatars, and let the Wav2Lip flow consume reference
+- Use uploaded or custom avatars, and let the Wav2Lip flow consume reference
   images or frame assets as needed.
 
 ## Weight Preparation
@@ -62,7 +62,7 @@ Expect `backend=local` and `connected=true`. The first load initializes the chec
 |---------|--------|
 | Checkpoint not found | Check `OPENTALKING_WAV2LIP_MODEL_ROOT` and both `.pth` files. |
 | Out of GPU memory | Lower `OPENTALKING_WAV2LIP_BATCH_SIZE` or `OPENTALKING_WAV2LIP_MAX_LONG_EDGE`. |
-| Slow first frame | Set `OPENTALKING_PREWARM_AVATARS=singer` for common avatars. |
+| Slow first frame | Set `OPENTALKING_PREWARM_AVATARS=<avatar_id>` for common avatars. |
 | Enhancement mode fails | `easy_enhanced` requires GFPGAN and `OPENTALKING_WAV2LIP_GFPGAN_CHECKPOINT`. |
 
 ## Stop Services

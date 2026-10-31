@@ -42,7 +42,7 @@ Mock mode does not require model weights, so it is the fastest way to verify the
 
 ### I Want to Customize Avatar
 
-1. Validate one built-in avatar first.
+1. Upload and validate one avatar first.
 2. Read [Custom Avatar](./webui/custom-avatar.md) to understand image, video, and model requirements.
 3. Upload an image in WebUI, or prepare Wav2Lip assets with scripts.
 4. Select the new avatar in WebUI and test it with a short message.

@@ -1,0 +1,20 @@
+{
+  "id": "female-host-transparent",
+  "name": "测试透明背景形象",
+  "model_type": "wav2lip",
+  "fps": 25,
+  "sample_rate": 16000,
+  "width": 8,
+  "height": 8,
+  "version": "1.0",
+  "metadata": {
+    "idle_mode": "static",
+    "reference_mode": "image",
+    "frame_dir": "frames",
+    "source_image": "source/source.png",
+    "source_image_path": "reference.png",
+    "source_image_hash": "24dc8de057ac8b16ece324cfc74ea7cc91209e088147ca08896a496ccd5d6f8c",
+    "matting_status": "transparent_ready",
+    "person_mode": "single"
+  }
+}

@@ -60,7 +60,7 @@ def _write_duo_avatar(root: Path, avatar_id: str = "duo-anchor") -> Path:
 
 
 def _write_dogo_avatar(root: Path) -> Path:
-    source = Path.cwd() / "examples" / "avatars" / "dogo-light2d"
+    source = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "avatars" / "dogo-light2d"
     target = root / "dogo-light2d"
     shutil.copytree(source, target)
     return target
