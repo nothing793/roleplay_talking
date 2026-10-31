@@ -6,6 +6,84 @@
 
 > 根目录的 `roleplay_talking` 仍在起步阶段，只有项目说明，没有自己的可运行代码、依赖清单或配置示例。下面写的是根目录项目的目标和计划范围；`opentalking/` 子目录中的实现另见下方模块索引。
 
+## 短期目标
+
+实现一个 Windows `exe` 启动器，用 GUI 引导用户部署压缩包中的 `opentalking`。部署完成后创建桌面快捷方式，用户双击快捷方式即可打开 OpenTalking WebUI（默认 `http://127.0.0.1:5173`）。
+
+启动器不重新实现对话界面。OpenTalking 已经提供 WebUI 和统一启动脚本 `scripts/start_unified.sh`，启动器负责环境检查、依赖准备、服务启停、状态检测和打开浏览器。
+
+## 实现方案（可行性待验证）
+
+以下方案尚未做完整验证，先作为实现方向记录。
+
+### 部署路线
+
+优先封装 Docker 路线。`docker compose up -d` 会拉起 `redis`、`api`、`worker` 和 `web`，默认 Mock 模式不要求 GPU；GPU 环境可以用 `docker compose --profile gpu up` 启用真实合成后端。启动器检测 Docker 和 Compose，引导用户安装或启动 Docker，再执行 compose 命令，等待端口就绪后打开浏览器。这条路线不需要处理 Python 环境、Node 构建和模型权重，封装成本相对低。
+
+### GUI 最小功能
+
+1. **环境自检**：检查 Docker、Compose 是否可用，以及 `5173`、`8000` 端口是否被占用。
+2. **一键启动 / 停止**：分别调用 `docker compose up -d` 和 `docker compose down`。
+3. **状态显示**：轮询后端 API（`8000`）和 WebUI（`5173`），显示服务是否就绪。
+4. **日志面板**：读取 `docker compose logs -f` 的输出，实时显示启动和排错信息。
+5. **打开 WebUI**：服务就绪后自动调用 `webbrowser.open("http://127.0.0.1:5173")`，同时保留手动打开按钮。
+6. **配置编辑**：在界面中编辑 `.env` 的关键项，例如 LLM、TTS 的 API Key，避免用户直接改文件。
+
+### 技术实现
+
+可以用 PySide6 或 Tauri。团队熟悉 Python 时，PySide6 上手更快；追求更小体积时，可以用 Tauri + WebView2。
+
+下面的 Python 代码只表示启动和轮询的骨架，尚未验证：
+
+```python
+import subprocess
+import time
+import webbrowser
+from pathlib import Path
+
+import requests
+
+COMPOSE_DIR = Path(__file__).parent / "opentalking"
+
+
+def start_stack():
+    subprocess.Popen(
+        ["docker", "compose", "up", "-d"],
+        cwd=COMPOSE_DIR,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
+    )
+
+    for _ in range(60):
+        try:
+            requests.get("http://127.0.0.1:5173", timeout=1)
+            webbrowser.open("http://127.0.0.1:5173")
+            return
+        except requests.ConnectionError:
+            time.sleep(2)
+```
+
+日志面板读取 `docker compose logs -f` 的标准输出，逐行推送到 GUI。
+
+### 分发形态
+
+```text
+OpenTalkingLauncher/
+  Launcher.exe          # GUI 启动器
+  _internal/            # PyInstaller 依赖（onedir）
+  opentalking/          # OpenTalking 运行目录
+  resources/
+```
+
+使用 PyInstaller `--onedir` 打包，`opentalking/` 原样放在 exe 同级目录，压缩整个目录后分发。用户解压并双击 `Launcher.exe`，首次运行可以引导复制 `.env.example` 为 `.env`。桌面快捷方式可以在首次运行时创建，也可以改用 Inno Setup 生成安装包。
+
+### 需要提前确认
+
+1. Docker 不建议静默安装。首次检测失败时给出安装指引，用户装好并启动 Docker 后重新运行启动器即可。
+2. Docker 镜像不包含大模型权重。真实口型合成仍要配置本地模型后端或 OmniRT 远程运行时。默认先用 Mock 模式跑通链路，再引导配置 GPU 模型。
+
 ## OpenTalking 模块索引
 
 `opentalking/` 子目录包含已落地的 OpenTalking 实现、API 和中文文档。下面按能力整理入口，具体字段与校验规则以运行后的 OpenAPI（`/openapi.json`）为准。
@@ -18,7 +96,7 @@
 | 语音转文字（STT） | `POST /sessions/{id}/transcribe` 返回识别文本；`POST /sessions/{id}/speak_audio` 在识别后进入会话；WebSocket 支持流式音频输入 | [会话 API](opentalking/docs/zh/docs/api/sessions.md) · [STT 文档](opentalking/docs/zh/speech_models/stt.md) |
 | 视频生成 | `POST /video-creation/jobs` 创建视频任务，支持上传音频、文本合成、复刻音色、参考视频和双人对话等来源；结果可从 `/exports/videos/{id}/download` 下载 | [视频创作](opentalking/docs/zh/usage/webui/video-creation.md) · [视频创作 API/RTMPS](opentalking/docs/zh/docs/api/video-creation-rtmps-execution.md) · [视频克隆](opentalking/docs/zh/usage/webui/video-clone.md) |
 | 实时对话与 WebRTC | `POST /sessions`、`POST /sessions/{id}/webrtc/offer`，以及音频输入 WebSocket；SSE `/sessions/{id}/events` 推送 `transcript`、`llm`、`subtitle.chunk`、`tts`、`frame` 等事件 | [会话 API](opentalking/docs/zh/docs/api/sessions.md) · [事件与流式接口](opentalking/docs/zh/docs/api/events.md) |
-| API 接口总览 | REST、SSE 与 WebSocket；默认 Base URL 为 `http://localhost:8000`，Swagger UI 为 `<base>/docs`，原始规范为 `<base>/openapi.json` | [API 索引](opentalking/docs/zh/docs/api/index.md) · [架构说明](opentalking/docs/zh/docs/architecture.md) · [OpenTalking 中文 README](opentalking/README.zh.md) |
+| API 接口总览 | REST、SSE 与 WebSocket；默认 Base URL 为 `http://localhost:8000`，Swagger UI 为 `<base>/docs`，原始规范为 `<base>/openapi.json` | [API 索引](opentalking/docs/zh/docs/api/index.md) · [架构说明](opentalking/docs/zh/docs/architecture.md) · [OpenTalking 中文文档](opentalking/docs/zh/index.md) |
 
 > 你列出的“生成文本”按 LLM 对话回复整理，“生成文字”按语音转文字（STT）整理；如果“生成文字”指的是前端字幕，字幕由 SSE 的 `transcript`、`llm` 和 `subtitle.chunk` 事件输出。OpenTalking 的文本生成在会话运行时内部完成，当前没有单独的 chat REST 端点。
 
@@ -100,3 +178,7 @@
 ## 开发人员
 
 nothing793  Reoxy258
+
+## Task
+
+- [ ] 将整理后的 `opentalking` 压缩包上传到 <https://github.com/nothing793/roleplay_talking>。
